@@ -16,9 +16,9 @@ export default function Home() {
     const init = async () => {
       setLoading(true)
       try {
-        await indexedDB.openDb()
+        await indexedDB.openDb() // Abre o banco de dados IndexedDB
         console.log("DB opened")
-        await fetchData()
+        await fetchData() // Carrega os dados do IndexedDB
       } catch (error) {
         console.error("Error: ", error)
       } finally {
@@ -30,10 +30,10 @@ export default function Home() {
 
   const fetchData = async () => {
     try {
-      const storeData = await indexedDB.getStore("user")
+      const storeData = await indexedDB.getStore("user") // Obtém os dados da object store "user"
       setData(storeData)
     } catch (error) {
-      console.log("Error: ", error)
+      console.log("Error: ", error) // Loga se houver erro ao obter os dados
     }
   }
 
@@ -41,13 +41,10 @@ export default function Home() {
     e.preventDefault()
 
     try {
-      const db = await indexedDB.openDb()
-      const addDb = await indexedDB.addOrUpdate(
-        { name, age, profession },
-        "user"
-      )
+      await indexedDB.openDb() // Abre o banco de dados IndexedDB
+      await indexedDB.addOrUpdate({ name, age, profession }, "user") // Adiciona ou atualiza um item na object store "user" com os valores atuais de name, age e profession
       console.log("User added")
-      await fetchData()
+      await fetchData() // Carrega os dados atualizados do IndexedDB
     } catch (e) {
       console.error("Error: ", e)
     }
@@ -55,10 +52,10 @@ export default function Home() {
 
   const handleDelete = async (id: number) => {
     try {
-      await indexedDB.openDb()
-      await indexedDB.deleteItem(id, "user")
+      await indexedDB.openDb() // Abre o banco de dados IndexedDB
+      await indexedDB.deleteItem(id, "user") // Deleta o item com o ID especificado da object store "user"
       console.log("Item deleted")
-      await fetchData()
+      await fetchData() // Carrega os dados atualizados do IndexedDB após a exclusão
     } catch (error) {
       console.error("Error: ", error)
     }
